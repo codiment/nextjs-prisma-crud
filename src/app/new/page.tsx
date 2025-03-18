@@ -38,8 +38,11 @@ function NewPage({params} :{params: { id: string }}) {
 
     return (
         <div>
-        <section className="h-screen flex items-center justify-center">
-            <form onSubmit={onSubmit}>
+        <section className="h-[calc(100vh-7rem)] flex items-center justify-center">
+            <form onSubmit={onSubmit} className='w-1/4'>
+                <h1 className='text-3xl font-bold pb-4'>
+                    {unwrappedParams.id ? 'Update' : 'Create'} Task
+                </h1>
                 <label htmlFor='title' className='font-bold text-xs'>Write your title:</label>
                 <input id='title'
                        type="text"
@@ -59,12 +62,14 @@ function NewPage({params} :{params: { id: string }}) {
                         {unwrappedParams.id ? 'Update' : 'Create'}
                     </button>
                     <button type='button'
-                            className='bg-red-500 px-3 py-1 rounded-md text-white mt-2 hover:bg-red-400 hover:cursor-pointer'
+                            className={`px-3 py-1 rounded-md text-white mt-2 hover:cursor-pointer ${unwrappedParams.id ? 'bg-red-500 hover:bg-red-400' : 'bg-gray-500 hover:bg-gray-400'}`}
                             onClick={async () => {
-                              await axios.delete(`/api/tasks/${unwrappedParams.id}`);
+                              if (unwrappedParams.id) {
+                                await axios.delete(`/api/tasks/${unwrappedParams.id}`);
+                              }
                               router.push('/');
                             }}>
-                        Delete
+                        {unwrappedParams.id ? 'Delete' : 'Cancel'}
                     </button>
                 </div>
             </form>
